@@ -161,9 +161,10 @@
 -- (Escribir consulta aquí)
 
 -- ============================================================
--- Ejercicio 21 — Precio promedio por subcategoría
--- Orden: Calcular el precio promedio de lista de los productos en cada subcategoría.
---        Mostrar: subcategoryid, AVG(listprice). Excluir productos sin subcategoría.
+-- Ejercicio 21 — Precio promedio y conteo de productos por subcategoría
+-- Orden: Calcular el precio promedio de lista (listprice) y el total de productos
+--        en cada subcategoría. Mostrar: productsubcategoryid, promedio_precio y cantidad_productos.
+--        Ordenar por cantidad_productos descendente.
 -- ============================================================
 -- (Escribir consulta aquí)
 
@@ -195,9 +196,11 @@
 -- (Escribir consulta aquí)
 
 -- ============================================================
--- Ejercicio 26 — Inventario total por ubicación
--- Orden: Sumar la cantidad en inventario (quantity) agrupada por ubicación (locationid).
---        Mostrar: locationid, total_inventario.
+-- Ejercicio 26 — Inventario dentro de un rango
+-- Orden: Calcular la suma de la cantidad en inventario (quantity) agrupada por ubicación (locationid).
+--        Mostrar únicamente aquellas ubicaciones cuyo total de inventario
+--        se encuentre entre 200 y 800 unidades.
+--        Incluir: locationid y total_inventario. Ordenar por total_inventario ascendente.
 -- ============================================================
 -- (Escribir consulta aquí)
 
@@ -223,8 +226,10 @@
 -- (Escribir consulta aquí)
 
 -- ============================================================
--- Ejercicio 30 — Productos más caros primero
--- Orden: Listar los 10 productos más caros en base a listprice.
---        Mostrar: productid, name, listprice. Ordenar desc y limitar a 10 registros.
+-- Ejercicio 30 — Productos de precio alto (paginación)
+-- Orden: Listar los productos cuyo precio de lista sea más alto.
+--        Mostrar los productos desde la sexta posición en adelante,
+--        obteniendo únicamente los siguientes 10 registros.
+--        Incluir: productid, name y listprice, ordenados por listprice descendente.
 -- ============================================================
 -- (Escribir consulta aquí)
