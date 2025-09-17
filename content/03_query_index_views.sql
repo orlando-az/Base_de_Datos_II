@@ -94,3 +94,31 @@ DROP INDEX idx_persona_apellido
 ----------VIEWS-------------
 --==========================
 CREATE VIEW EXAMPLE AS
+
+-- Ejercicio 1
+-- Se requiere diseñar una vista en la base de datos que permita visualizar las direcciones de domicilio asociadas a las personas registradas.
+
+-- La vista debe proporcionar la siguiente información:
+
+-- Id de persona
+-- Nombre.
+-- Apellido.
+-- Nombre completo.
+-- Dirección (líneas 1 y 2). En caso de que algún valor sea nulo, deberá mostrarse la leyenda “Sin dirección”.
+-- Ciudad.
+-- Estado o provincia.
+-- Código postal.
+-- País.
+
+
+
+-- Ejercicio 2
+-- Detalle de productos vendidos en los meses de enero y diciembre, mostrando las cantidades vendidas y filtrando los más vendidos de diciembre.
+
+-- Descripción:
+-- Crear una vista que muestre, para cada producto y mes:
+
+-- Nombre del producto (product_name)
+-- Mes de la venta (month) — enero o diciembre
+-- Año de la venta (year)
+
