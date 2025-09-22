@@ -14,4 +14,5 @@
 -- determinar el ranking dentro de cada categoría y mostrar solo los top 3, 
 -- incluyendo nombre del producto, categoría, cantidad vendida y posición en el ranking, 
 -- usando un CTE para la agregación y el ranking
+-- RANK() OVER ( PARTITION BY ORDER BY)
 
