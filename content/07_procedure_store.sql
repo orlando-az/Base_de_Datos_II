@@ -72,6 +72,8 @@ SELECT * from student
 -- Matricule automáticamente al estudiante en la sección indicada insertando en la tabla enrollment.
 -- Muestre un mensaje confirmando el ID del estudiante y el ID de la matrícula generados.
 
+
+
 -- Ejercicio 4
 -- Crea un procedimiento almacenado llamado enroll_if_not_exists que:
 
