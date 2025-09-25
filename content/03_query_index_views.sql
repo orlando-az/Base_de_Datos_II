@@ -20,6 +20,32 @@
 --      - Apellido (LastName)
 --      - Nombre (FirstName)
 
+SELECT 
+    e.businessentityid,
+    p.firstname,
+    p.lastname,
+    e.jobtitle,
+    d.name AS department,
+    s.name AS shift,
+    e.hiredate,
+    edh.startdate,
+    EXTRACT(YEAR FROM AGE(p.birthdate)) AS edad
+FROM humanresources.employee e
+INNER JOIN person.person p 
+    ON e.businessentityid = p.businessentityid
+INNER JOIN humanresources.employeedepartmenthistory edh 
+    ON e.businessentityid = edh.businessentityid
+INNER JOIN humanresources.department d 
+    ON edh.departmentid = d.departmentid
+INNER JOIN humanresources.shift s 
+    ON edh.shiftid = s.shiftid
+WHERE 
+    (
+        (p.lastname LIKE 'M%' AND e.jobtitle ILIKE '%Manager%')
+        OR s.name IN ('Evening', 'Night')
+    )
+    AND EXTRACT(YEAR FROM AGE(p.birthdate)) BETWEEN 30 AND 40
+ORDER BY d.name, p.lastname, p.firstname;
 
 -- Ejercicio 2 — Órdenes de compra por estado
 -- Orden:
@@ -33,6 +59,24 @@
 -- 4. Agrupar por estado, proveedor y método de envío.
 -- 5. Ordenar de forma descendente por la cantidad de órdenes.
 
+SELECT
+    CASE po.status
+        WHEN 1 THEN 'En proceso'
+        WHEN 2 THEN 'Aprobada'
+        WHEN 3 THEN 'Rechazada'
+        WHEN 4 THEN 'Completada'
+    END AS estado,
+    v.vendorname,
+    sm.shipmethod,
+    COUNT(*) AS cantidad_ordenes
+FROM purchasing.purchaseorderheader po
+INNER JOIN purchasing.vendor v 
+    ON po.vendorid = v.vendorid
+INNER JOIN purchasing.shipmethod sm 
+    ON po.shipmethodid = sm.shipmethodid
+WHERE po.orderdate BETWEEN '2014-06-01' AND '2014-12-31'
+GROUP BY po.status, v.vendorname, sm.shipmethod
+ORDER BY cantidad_ordenes DESC;
 
 -- Ejercicio 3 — Empleados por departamento y turno
 -- Orden:
@@ -40,6 +84,20 @@
 -- 2. Contar cuántos trabajan en turno Day, Evening y Night.
 -- 3. Agrupar por departamento y ordenar alfabéticamente.
 
+SELECT 
+    d.name AS departamento,
+    COUNT(*) AS total_empleados,
+    SUM(CASE WHEN s.name = 'Day' THEN 1 ELSE 0 END) AS turno_day,
+    SUM(CASE WHEN s.name = 'Evening' THEN 1 ELSE 0 END) AS turno_evening,
+    SUM(CASE WHEN s.name = 'Night' THEN 1 ELSE 0 END) AS turno_night
+FROM humanresources.employeedepartmenthistory edh
+INNER JOIN humanresources.department d 
+    ON edh.departmentid = d.departmentid
+INNER JOIN humanresources.shift s 
+    ON edh.shiftid = s.shiftid
+WHERE edh.enddate IS NULL  
+GROUP BY d.name
+ORDER BY d.name;
 
 -- Ejercicio 4 — Órdenes de trabajo a tiempo y retrasadas por producto
 -- Tablas a usar:
@@ -61,6 +119,20 @@
 --      - Órdenes a tiempo
 --      - Órdenes retrasadas
 --      - Total de órdenes
+
+SELECT 
+    p.productid,
+    p.name AS product_name,
+    COUNT(*) AS total_workorders,
+    SUM(CASE WHEN w.enddate IS NOT NULL AND w.enddate <= w.duedate THEN 1 ELSE 0 END) AS a_tiempo,
+    SUM(CASE WHEN w.enddate IS NOT NULL AND w.enddate > w.duedate THEN 1 ELSE 0 END) AS retrasadas
+FROM production.workorder w
+INNER JOIN production.product p
+    ON w.productid = p.productid
+WHERE w.startdate BETWEEN '2012-07-01' AND '2013-01-01'  
+GROUP BY p.productid, p.name
+HAVING COUNT(*) > 0  
+ORDER BY a_tiempo DESC, retrasadas DESC, total_workorders DESC;
 
 --==========================
 ----------INDEX-------------
@@ -110,7 +182,27 @@ CREATE VIEW EXAMPLE AS
 -- Código postal.
 -- País.
 
-
+CREATE OR REPLACE VIEW vw_persona_direcciones AS
+SELECT
+    p.businessentityid AS persona_id,
+    p.firstname AS nombre,
+    p.lastname AS apellido,
+    (p.firstname || ' ' || p.lastname) AS nombre_completo,
+    COALESCE(a.addressline1, 'Sin dirección') AS direccion_linea1,
+    COALESCE(a.addressline2, 'Sin dirección') AS direccion_linea2,
+    a.city AS ciudad,
+    a.stateprovince AS estado_provincia,
+    a.postalcode AS codigo_postal,
+    c.name AS pais
+FROM person.person p
+INNER JOIN person.businessentityaddress bea
+    ON p.businessentityid = bea.businessentityid
+INNER JOIN person.address a
+    ON bea.addressid = a.addressid
+INNER JOIN person.stateprovince sp
+    ON a.stateprovinceid = sp.stateprovinceid
+INNER JOIN person.countryregion c
+    ON sp.countryregioncode = c.countryregioncode;
 
 -- Ejercicio 2
 -- Detalle de productos vendidos en los meses de enero y diciembre, mostrando las cantidades vendidas y filtrando los más vendidos de diciembre.
@@ -122,3 +214,16 @@ CREATE VIEW EXAMPLE AS
 -- Mes de la venta (month) — enero o diciembre
 -- Año de la venta (year)
 
+CREATE OR REPLACE VIEW vw_productos_enero_diciembre AS
+SELECT
+    p.name AS product_name,
+    TO_CHAR(sod.orderdate, 'Month') AS mes,
+    EXTRACT(YEAR FROM sod.orderdate) AS year,
+    SUM(sod.orderqty) AS cantidad_vendida
+FROM sales.salesorderdetail sod
+INNER JOIN production.product p
+    ON sod.productid = p.productid
+WHERE EXTRACT(MONTH FROM sod.orderdate) IN (1, 12)  
+GROUP BY p.name, TO_CHAR(sod.orderdate, 'Month'), EXTRACT(YEAR FROM sod.orderdate)
+HAVING EXTRACT(MONTH FROM sod.orderdate) = 12  
+ORDER BY cantidad_vendida DESC;

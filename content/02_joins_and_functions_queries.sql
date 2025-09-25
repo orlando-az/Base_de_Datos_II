@@ -103,3 +103,11 @@ LIMIT 10
 -- Consigna: Listar los clientes con su nombre completo, correo electrónico y cantidad de órdenes realizadas.
 -- Tablas: person.person, person.emailaddress, sales.customer, sales.salesorderheader
 -- ============================================================
+
+SELECT p.firstname, p.lastname, e.emailaddress, COUNT(h.salesorderid) AS total_ordenes
+FROM person.person p
+INNER JOIN person.emailaddress e ON p.businessentityid = e.businessentityid
+INNER JOIN sales.customer c ON p.businessentityid = c.personid
+INNER JOIN sales.salesorderheader h ON c.customerid = h.customerid
+GROUP BY p.firstname, p.lastname, e.emailaddress
+ORDER BY total_ordenes DESC;

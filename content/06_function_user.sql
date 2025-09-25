@@ -94,7 +94,6 @@ SELECT * from purchasing.productvendor
 where businessentityid=1672
 
 
-
 -- Ejercicio 4
 -- Crear una función que reciba un id del cliente y un año, y devuelva la categoría del cliente 
 -- (Premium, Regular o Básico) según el total de compras en ese año.
