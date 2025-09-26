@@ -18,3 +18,15 @@
 -- solo si la matrícula está activa o completada.
 
 -- Nota: Usa la base de datos de 'University'
+
+-- Ejercicio 1:
+-- Crear un trigger que antes de insertar o actualizar un registro 
+-- en enrollment, ajuste la nota (grade) para que siempre esté entre 0 y 100.
+
+-- Ejercicio 2: 
+-- Crear un trigger que antes de insertar o actualizar una sección de clase (class_section), 
+-- verifique que end_date no sea anterior a start_date. Si lo es, lanzar un error.
+
+-- Ejercicio 3:
+-- Crear un trigger que después de actualizar un estudiante (student), registre en 
+-- student_audit los cambios del campo status junto con la fecha y hora del cambio.
