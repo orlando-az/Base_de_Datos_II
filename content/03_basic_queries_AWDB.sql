@@ -106,6 +106,13 @@ where a.city in ('Seattle','New York')
 --   salesorderid, product_name, orderqty
 -- ============================================================
 
+Select soh.salesorderid as "Numeropedido", p."name" as "Producto", sod.orderqty as "Cantidad"
+from sales.salesorderheader soh 
+INNER JOIN sales.salesorderdetail as sod ON soh.salesorderid = sod.salesorderid
+INNER JOIN production.product as p ON p.productid = sod.productid
+order by 3 desc
+
+select * from sales.salesorderdetail
 
 -- ============================================================
 -- Ejercicio 7 — Productos con más de 100 unidades vendidas
@@ -117,7 +124,11 @@ where a.city in ('Seattle','New York')
 -- Requisito:
 --   Usar GROUP BY y HAVING.
 -- ============================================================
-
+select p."name" as "Producto", SUM(sod.orderqty) as "Total Vendido"
+from sales.salesorderdetail as sod
+INNER JOIN production.product as p ON sod.productid = p.productid
+GROUP BY p.name
+order by 2 desc
 
 -- ============================================================
 -- Ejercicio 8 — Paginación de pedidos más caros
@@ -130,6 +141,11 @@ where a.city in ('Seattle','New York')
 --   Usar ORDER BY, LIMIT y OFFSET.
 -- ============================================================
 
+Select soh.salesorderid, soh.totaldue
+from sales.salesorderheader as soh
+ORDER BY 2 desc
+LIMIT 5
+OFFSET 20
 
 -- ============================================================
 -- Ejercicio 9 — Ventas realizadas por empleados de tipo Sales
@@ -154,8 +170,9 @@ where a.city in ('Seattle','New York')
 --   precio_lista, total_unidades_vendidas
 -- ============================================================
 
+
 -- ============================================================
--- Ejercicio 7 — Clasificación de productos por rango de precio
+-- Ejercicio 11 — Clasificación de productos por rango de precio
 -- Orden:
 --   Mostrar los productos cuyo nombre contenga 'Bike'
 --   o 'Road', clasificándolos según su precio de lista.
