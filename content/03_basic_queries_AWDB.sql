@@ -10,6 +10,7 @@
 -- ============================================================
 
 
+
 -- ============================================================
 -- Ejercicio 1 — Clientes registrados
 -- Orden:
@@ -19,6 +20,12 @@
 --   first_name, last_name
 -- ============================================================
 
+select p.firstname, p.lastname
+from person.person as p
+INNER JOIN sales.customer as c on p.businessentityid = c.personid
+
+
+select* from person.person
 
 
 -- ============================================================
@@ -30,6 +37,9 @@
 --   salesorderid, orderdate, totaldue
 -- ============================================================
 
+select soh.salesorderid, soh.orderdate,soh.totaldue
+from sales.salesorderheader as soh
+where soh.orderdate >='2014-01-01' and soh.totaldue > 1000
 
 
 -- ============================================================
@@ -40,7 +50,9 @@
 --   productid, name
 -- ============================================================
 
-
+select productid,name
+from production.product
+where name like 'B%'
 
 -- ============================================================
 -- Ejercicio 4 — Pedidos realizados durante el año 2012
@@ -51,7 +63,14 @@
 --   salesorderid, orderdate
 -- ============================================================
 
+select salesorderid, orderdate from
+sales.salesorderheader 
+where orderdate between '2012-01-01' and '2012-12-31'
 
+
+select salesorderid, orderdate,EXTRACT(YEAR FROM orderdate)
+from sales.salesorderheader 
+where EXTRACT(YEAR FROM orderdate) = 2012
 
 -- ============================================================
 -- Ejercicio 5 — Clientes por ciudad específica
@@ -62,7 +81,20 @@
 --   first_name, last_name, city
 -- ============================================================
 
+select p.firstname, p.lastname,a.city
+from person.person as p
+INNER JOIN sales.customer as c on c.personid = p.businessentityid
+INNER JOIN person.businessentity as b on p.businessentityid = b.businessentityid
+INNER JOIN person.businessentityaddress bea on b.businessentityid = bea.businessentityid
+INNER JOIN person.address as a on bea.addressid = a.addressid
+where a.city in ('Seattle','New York')
 
+select p.firstname, p.lastname,a.city
+from person.person as p
+INNER JOIN sales.customer as c on c.personid = p.businessentityid
+INNER JOIN person.businessentityaddress bea on p.businessentityid = bea.businessentityid
+INNER JOIN person.address as a on bea.addressid = a.addressid
+where a.city in ('Seattle','New York')
 
 
 -- ============================================================
@@ -73,8 +105,6 @@
 -- Campos sugeridos:
 --   salesorderid, product_name, orderqty
 -- ============================================================
-
-
 
 
 -- ============================================================
@@ -89,7 +119,6 @@
 -- ============================================================
 
 
-
 -- ============================================================
 -- Ejercicio 8 — Paginación de pedidos más caros
 -- Orden:
@@ -101,3 +130,42 @@
 --   Usar ORDER BY, LIMIT y OFFSET.
 -- ============================================================
 
+
+-- ============================================================
+-- Ejercicio 9 — Ventas realizadas por empleados de tipo Sales
+-- Orden:
+--   Mostrar ventas mayores a 5000 realizadas en 2013 o 2014
+--   por empleados cuyo cargo contenga 'Sales' y que
+--   pertenezcan a los territorios Northwest o Southwest.
+-- Campos sugeridos:
+--   nombre_empleado, jobtitle, territorio,
+--   salesorderid, orderdate, totaldue
+-- ============================================================
+
+
+-- ============================================================
+-- Ejercicio 10 — Productos Red o Black con alto volumen
+-- Orden:
+--   Mostrar productos de color Red o Black cuyo nombre
+--   comience con 'R', que se hayan vendido más de 200
+--   unidades en pedidos con status 1 o 5.
+-- Campos sugeridos:
+--   productid, nombre_producto, color,
+--   precio_lista, total_unidades_vendidas
+-- ============================================================
+
+-- ============================================================
+-- Ejercicio 7 — Clasificación de productos por rango de precio
+-- Orden:
+--   Mostrar los productos cuyo nombre contenga 'Bike'
+--   o 'Road', clasificándolos según su precio de lista.
+--
+--   Clasificación:
+--     'Alto'   → listprice > 2000
+--     'Medio'  → listprice entre 1000 y 2000
+--     'Bajo'   → listprice < 1000
+--
+-- Campos sugeridos:
+--   productid, nombre_producto,
+--   categoria, listprice, nivel_precio
+-- ============================================================
