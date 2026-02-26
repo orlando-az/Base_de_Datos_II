@@ -1,0 +1,54 @@
+-- Ejercicio 1 (10 puntos)
+-- La gerencia comercial requiere evaluar el desempeño de las líneas de producto a lo largo del tiempo. El objetivo es determinar qué categorías generan mayor facturación por año, permitiendo identificar liderazgo y tendencias en cada periodo fiscal.
+-- Mostrar: Año de venta, Categoría de producto y Total facturado
+-- Condiciones:
+-- •	Considerar todas las ventas registradas.
+-- •	Agrupar por año y categoría.
+-- •	Ordenar por año y total facturado descendente.
+
+-- Ejercicio 2 (10 puntos)
+-- La dirección comercial necesita identificar clientes estratégicos con alto volumen de compras posteriores a 2012, con el fin de diseñar políticas de fidelización.
+-- Mostrar: Cliente, Total vendido y Cantidad de órdenes
+-- Condiciones:
+-- •	Ventas posteriores a 2012
+-- •	Total vendido mayor a 100000
+-- •	Ordenar por total vendido descendente
+
+-- Ejercicio 3 (20 puntos)
+-- La gerencia de abastecimiento busca identificar proveedores estratégicos según volumen y frecuencia de compras en un periodo determinado.
+-- Mostrar: Nombre del proveedor, Total de órdenes y Total comprado
+-- Condiciones:
+-- •	Órdenes entre 2012 y 2014
+-- •	Subtotal entre 5000 y 50000
+-- •	Status distinto de 4
+-- •	Más de 3 órdenes
+-- •	Ordenar por total comprado descendente
+
+-- Ejercicio 4 (10 puntos)
+-- El área administrativa desea evaluar en qué estados o provincias se concentra el mayor gasto en compras para identificar oportunidades de negociación con proveedores locales.
+-- Mostrar: Estado, Total comprado y Cantidad de órdenes
+-- Condiciones:
+-- •	Órdenes entre 2012 y 2014
+-- •	Status diferente de 4
+-- •	Total comprado mayor a 150000
+-- •	Ordenar por total comprado descendente
+
+-- Ejercicio 5 (10 puntos)
+-- La dirección financiera requiere analizar la evolución del gasto anual en compras para evaluar tendencias presupuestarias.
+-- Mostrar: Año, Total comprado
+-- Condiciones:
+-- •	Órdenes entre 2012 y 2014
+-- •	Status diferente de 4
+-- •	Ordenar por año
+
+-- Ejercicio 6 (20 puntos)
+-- La gerencia comercial desea segmentar su cartera de clientes en función del volumen de facturación acumulada posterior al año 2012.
+-- El objetivo es clasificar a los clientes en categorías estratégicas que permitan definir políticas diferenciadas de atención y fidelización.
+-- Mostrar: Cliente, Total facturado, Cantidad de órdenes y Nivel de cliente (clasificación)
+-- Criterios de clasificación
+-- •	'Premium' → total facturado > 200000
+-- •	'Gold' → total facturado entre 100000 y 200000
+-- •	'Regular' → total facturado < 100000
+-- Condiciones:
+-- •	Considerar ventas posteriores a 2012.
+-- •	Ordenar por total facturado descendente.
