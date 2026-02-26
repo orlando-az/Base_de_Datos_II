@@ -158,6 +158,23 @@ OFFSET 20
 --   salesorderid, orderdate, totaldue
 -- ============================================================
 
+SELECT 
+    p.firstname || ' ' || p.lastname AS nombre_empleado,
+    e.jobtitle,
+    st.name AS territorio,
+    soh.salesorderid,
+    soh.orderdate,
+    soh.totaldue
+FROM sales.salesorderheader soh
+INNER JOIN sales.salesperson sp ON soh.salespersonid = sp.businessentityid
+INNER JOIN humanresources.employee e ON sp.businessentityid = e.businessentityid
+INNER JOIN person.person p ON e.businessentityid = p.businessentityid
+INNER JOIN sales.salesterritory st ON sp.territoryid = st.territoryid
+WHERE soh.totaldue > 5000
+  AND EXTRACT(YEAR FROM soh.orderdate) IN (2013, 2014)
+  AND e.jobtitle ILIKE '%Sales%'
+  AND st.name IN ('Northwest', 'Southwest')
+ORDER BY soh.orderdate;
 
 -- ============================================================
 -- Ejercicio 10 — Productos Red o Black con alto volumen
@@ -170,6 +187,21 @@ OFFSET 20
 --   precio_lista, total_unidades_vendidas
 -- ============================================================
 
+SELECT 
+    p.productid,
+    p.name AS nombre_producto,
+    p.color,
+    p.listprice AS precio_lista,
+    SUM(sod.orderqty) AS total_unidades_vendidas
+FROM production.product p
+INNER JOIN sales.salesorderdetail sod ON p.productid = sod.productid
+INNER JOIN sales.salesorderheader soh ON sod.salesorderid = soh.salesorderid
+WHERE p.color IN ('Red', 'Black')
+  AND p.name ILIKE 'R%'
+  AND soh.status IN (1, 5)
+GROUP BY p.productid,p.name,p.color,p.listprice
+HAVING SUM(sod.orderqty) > 200
+ORDER BY total_unidades_vendidas DESC;
 
 -- ============================================================
 -- Ejercicio 11 — Clasificación de productos por rango de precio
@@ -186,3 +218,22 @@ OFFSET 20
 --   productid, nombre_producto,
 --   categoria, listprice, nivel_precio
 -- ============================================================
+
+SELECT
+    p.productid,
+    p.name AS nombre_producto,
+    pc.name AS categoria,
+    p.listprice,
+    CASE
+        WHEN p.listprice > 2000 THEN 'Alto'
+        WHEN p.listprice BETWEEN 1000 AND 2000 THEN 'Medio'
+        ELSE 'Bajo'
+    END AS nivel_precio
+FROM production.product p
+INNER JOIN production.productsubcategory ps
+    ON p.productsubcategoryid = ps.productsubcategoryid
+INNER JOIN production.productcategory pc
+    ON ps.productcategoryid = pc.productcategoryid
+WHERE p.name ILIKE '%Bike%'
+   OR p.name ILIKE '%Road%'
+ORDER BY p.listprice DESC;
