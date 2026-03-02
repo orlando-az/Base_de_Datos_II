@@ -1,0 +1,56 @@
+--=======================================================================
+-- Ejercicio 1
+-- El área financiera requiere identificar los años cuyo total de ventas
+-- haya superado los 10 millones.
+
+-- Calcular el total vendido por año.
+-- Filtrar únicamente aquellos años cuyo total sea mayor a 10,000,000.
+--=======================================================================
+
+--=======================================================================
+-- Ejercicio 2
+-- Identificar los clientes que hayan realizado más de
+-- 5 pedidos distintos en el sistema.
+--
+-- Calcular la cantidad de pedidos distintos por cliente.
+-- Mostrar nombre, apellido y cantidad de pedidos.
+-- Utilizar un CTE para aislar el conteo.
+--=======================================================================
+
+--=======================================================================
+-- Ejercicio 3
+--
+-- El área de Recursos Humanos necesita identificar a los empleados
+-- con mayor antigüedad dentro de la organización.
+--
+-- A partir de las fechas startdate y enddate (considerando la fecha
+-- actual cuando enddate sea NULL), se solicita:
+--
+-- 1. Calcular la antigüedad total en días.
+-- 2. Calcular la antigüedad descompuesta en años, meses y días.
+-- 3. Mostrar únicamente los 3 empleados con mayor antigüedad.
+--
+-- El resultado debe incluir:
+-- - ID del empleado
+-- - Días totales trabajados
+-- - Años
+-- - Meses
+-- - Días
+--
+-- Utilizar CTE para estructurar la solución.
+--=======================================================================
+
+--=======================================================================
+-- Ejercicio 4
+--
+-- El área comercial desea identificar el producto más vendido
+-- y el producto menos vendido en términos de cantidad total.
+--
+-- Se solicita:
+-- 1. Calcular la cantidad total vendida por producto.
+-- 2. Identificar el producto con mayor cantidad vendida.
+-- 3. Identificar el producto con menor cantidad vendida.
+-- 4. Mostrar nombre del producto y cantidad total.
+--
+-- Utilizar CTE para organizar la solución.
+--=======================================================================
