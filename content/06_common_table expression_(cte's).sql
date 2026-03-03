@@ -7,15 +7,47 @@
 -- Filtrar únicamente aquellos años cuyo total sea mayor a 10,000,000.
 --=======================================================================
 
+
+WITH nombre_cte AS (
+    SELECT columnas
+    FROM tabla
+    WHERE condicion
+)
+SELECT *
+FROM nombre_cte;
+
+WITH venta_total as (
+select extract(YEAR FROM soh.orderdate) as anio, 
+ROUND(SUM(soh.totaldue)) as total_venta
+from
+sales.salesorderheader as soh
+group by extract(YEAR FROM soh.orderdate)
+)
+Select * 
+from venta_total
+where total_venta > 15000000
+
 --=======================================================================
 -- Ejercicio 2
 -- Identificar los clientes que hayan realizado más de
--- 5 pedidos distintos en el sistema.
+-- 5 productos distintos en el sistema.
 --
 -- Calcular la cantidad de pedidos distintos por cliente.
 -- Mostrar nombre, apellido y cantidad de pedidos.
 -- Utilizar un CTE para aislar el conteo.
 --=======================================================================
+
+WITH pedidos_cliente as (
+	select distinct soh.customerid as clienteid,count( sod.productid) cantidad_productos
+	from sales.salesorderdetail	as sod
+	inner join sales.salesorderheader as soh on sod.salesorderid= soh.salesorderid
+	group by soh.customerid
+	order by 1,2
+)
+select p.firstname,p.lastname, pc.cantidad_productos
+from person.person as p
+INNER JOIN pedidos_cliente AS pc ON pc.clienteid = p.businessentityid
+where pc.cantidad_productos > 5
 
 --=======================================================================
 -- Ejercicio 3
@@ -39,6 +71,26 @@
 --
 -- Utilizar CTE para estructurar la solución.
 --=======================================================================
+With fechas as(
+select dh.businessentityid, dh.startdate as fecha_ini,
+COALESCE(dh.enddate,CURRENT_DATE) as fecha_fin
+from humanresources.employeedepartmenthistory dh
+),
+intervalos as (
+select (fecha_fin - fecha_ini) as dias_totales,
+AGE(fecha_fin,fecha_ini) as rango
+from fechas 
+) 
+select dias_totales,
+extract(YEAR FROM rango) as anio,
+extract(MONTH FROM rango) as mes,
+extract(DAY FROM rango) as dias
+from intervalos
+ORDER BY 1 DESC
+LIMIT 3
+
+	
+
 
 --=======================================================================
 -- Ejercicio 4
@@ -54,3 +106,25 @@
 --
 -- Utilizar CTE para organizar la solución.
 --=======================================================================
+
+MAX -- VALOR MAXIMO DE UNA SELECCION
+MIN -- VALOR MINIMO DE LA SELECCION
+
+select  min(businessentityid) from person.person
+
+WITH producto_cantidades as (
+  select productid ,sum(orderqty) as cantidad from
+  sales.salesorderdetail
+  group by productid
+ ),
+ extremos as (
+	select max(cantidad) as cantidad_maxima,
+	min(cantidad) cantidad_minima
+	from producto_cantidades
+ )
+select p.name, pc.cantidad
+from production.product as p
+INNER JOIN producto_cantidades as pc ON pc.productid = p.productid
+WHERE pc.cantidad = (select cantidad_maxima from extremos)
+or pc.cantidad = (select cantidad_minima from extremos)
+
