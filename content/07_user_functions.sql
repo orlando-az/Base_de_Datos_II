@@ -14,6 +14,22 @@
 --   - impuesto_calculado
 --=======================================================================
 
+CREATE OR REPLACE FUNCTION sa.calcular_impuesto(monto NUMERIC)
+RETURNS NUMERIC
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	RETURN monto * 0.13;
+END;
+$$
+
+select sa.calcular_impuesto(600)
+
+select salesorderid as orden, 
+totaldue as total_venta, 
+sa.calcular_impuesto(totaldue) as impuesto
+from sales.salesorderheader
+
 --=======================================================================
 -- Ejercicio 2
 -- Crear una función llamada total_compras_cliente.
@@ -30,6 +46,29 @@
 --   - customerid
 --   - total_compras
 --=======================================================================
+
+CREATE OR REPLACE FUNCTION compras_cliente(p_customerid int)
+RETURNS NUMERIC
+LANGUAGE plpgsql
+AS $$
+DECLARE
+	v_total_compra NUMERIC;
+BEGIN
+	Select sum(totaldue) INTO v_total_compra
+	from sales.salesorderheader
+	where customerid = p_customerid
+	group by customerid;
+
+	RETURN coalesce(v_total_compra,0);
+END;
+$$
+
+drop FUNCTION compras_cliente
+
+SELECT customerid as numero_cliente, 
+compras_cliente(customerid)  as total_compra
+FROM sales.customer
+limit 100
 
 --=======================================================================
 -- Ejercicio 3

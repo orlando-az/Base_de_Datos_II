@@ -76,6 +76,17 @@
 -- No se permite el uso de subconsultas correlacionadas ni conteos manuales.
 --=======================================================================
 
+WITH ranking AS (
+    SELECT productid,
+           name,
+           listprice,
+           DENSE_RANK() OVER (ORDER BY listprice DESC) AS posicion
+    FROM production.product
+)
+SELECT productid, name, listprice
+FROM ranking
+WHERE posicion = 2;
+
 --=======================================================================
 -- Ejercicio 7
 -- El área de fidelización requiere detectar clientes inactivos,
@@ -93,3 +104,20 @@
 -- Comparar ambas fechas utilizando INTERVAL para determinar
 -- aquellos clientes cuya inactividad sea superior a 2 años.
 --=======================================================================
+
+WITH ultima_compra AS (
+    SELECT customerid,
+           MAX(orderdate) AS ultima_fecha
+    FROM sales.salesorderheader
+    GROUP BY customerid
+),
+fecha_max AS (
+    SELECT MAX(orderdate) AS fecha_maxima
+    FROM sales.salesorderheader
+)
+SELECT uc.customerid,
+       uc.ultima_fecha
+FROM ultima_compra uc
+INNER JOIN fecha_max fm
+        ON uc.ultima_fecha < (fm.fecha_maxima - INTERVAL '2 years')
+ORDER BY uc.ultima_fecha;
