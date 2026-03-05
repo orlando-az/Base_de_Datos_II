@@ -1,0 +1,53 @@
+--=======================================================================
+-- Ejercicio 1
+-- Crear una función llamada total_productos_orden.
+--
+-- La función debe:
+-- 1. Recibir un parámetro p_salesorderid INT.
+-- 2. Calcular la suma de orderqty desde sales.salesorderdetail
+--    para esa orden.
+-- 3. Retornar 0 si la orden no tiene productos.
+--
+-- Luego:
+-- Utilizar la función en una consulta sobre sales.salesorderheader
+-- mostrando:
+--   - salesorderid
+--   - totaldue
+--   - total_productos
+--=======================================================================
+
+--=======================================================================
+-- Ejercicio 2
+-- Crear una función llamada precio_promedio_subcategoria.
+--
+-- La función debe:
+-- 1. Recibir un parámetro p_subcategoryid INT.
+-- 2. Calcular el promedio (AVG) de listprice
+--    desde production.product para esa subcategoría.
+-- 3. Retornar 0 si no existen productos.
+--
+-- Luego:
+-- Ejecutar la función en una consulta mostrando:
+--   - productsubcategoryid
+--   - name
+--   - precio_promedio
+--=======================================================================
+
+--=======================================================================
+-- Ejercicio 3
+-- Crear una función llamada estado_cliente.
+--
+-- La función debe:
+-- 1. Recibir un parámetro p_customerid INT.
+-- 2. Calcular el total de compras del cliente
+--    usando sales.salesorderheader.
+-- 3. Clasificar al cliente como:
+--       'CLIENTE VIP'    si total > 20000
+--       'CLIENTE NORMAL' si total > 5000
+--       'CLIENTE BAJO'   en cualquier otro caso.
+--
+-- Luego:
+-- Probar la función en una consulta mostrando:
+--   - customerid
+--   - estado_cliente
+--=======================================================================

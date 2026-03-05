@@ -89,6 +89,34 @@ limit 100
 --   - clasificacion
 --=======================================================================
 
+create or REPLACE function sa.clasificar_producto (p_productid int)
+RETURNS TEXT
+LANGUAGE plpgsql
+as $$
+DECLARE
+ v_precio NUMERIC;
+BEGIN
+	Select listprice INTO v_precio
+	from production.product
+	where productid= p_productid;
+
+	IF v_precio > 1000 then
+		RETURN 'ALTO';
+	ELSEIF v_precio> 500 then
+		return 'MEDIO';
+	ELSE
+		RETURN 'BAJO';
+	END IF;
+END;
+$$
+
+select 
+productid ,
+listprice,
+name as producto,
+sa.clasificar_producto(productid) as clasificacion
+from production.product
+
 --=======================================================================
 -- Ejercicio 4
 -- Crear una función que retorne tabla llamada historial_cliente.
