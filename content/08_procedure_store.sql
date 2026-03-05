@@ -1,0 +1,50 @@
+-- ============================================================
+-- EJERCICIO 1
+-- Registro de propietario con validación de email
+-- ============================================================
+-- Crear un procedimiento que:
+-- 1) Reciba nombre, apellido, teléfono y email.
+-- 2) Verifique que el email no exista.
+-- 3) Si no existe, inserte el propietario.
+-- 4) Si existe, mostrar un mensaje y no insertar.
+
+-- ============================================================
+-- EJERCICIO 2
+-- Registro de contrato con control de disponibilidad
+-- ============================================================
+-- Crear un procedimiento que:
+-- 1) Reciba datos del contrato.
+-- 2) Verifique que el departamento esté en estado 'disponible'.
+-- 3) Si está disponible, registre el contrato.
+-- 4) Actualice el estado del departamento a 'ocupado'.
+-- 5) Si no está disponible, mostrar mensaje.
+
+-- ============================================================
+-- EJERCICIO 3
+-- Registro de pago validando contrato
+-- ============================================================
+-- Crear un procedimiento que:
+-- 1) Reciba id_contrato, fecha_pago, monto y metodo_pago.
+-- 2) Verifique que el contrato exista.
+-- 3) Verifique que el monto sea mayor a 0.
+-- 4) Si todo es correcto, registre el pago.
+
+-- ============================================================
+-- EJERCICIO 4
+-- Registro de mantenimiento con control de errores
+-- ============================================================
+-- Crear un procedimiento que:
+-- 1) Reciba datos del mantenimiento.
+-- 2) Inserte el registro.
+-- 3) Capture errores por claves foráneas inválidas.
+-- 4) Muestre un mensaje en caso de error.
+
+-- ============================================================
+-- EJERCICIO 5
+-- Finalización de contrato
+-- ============================================================
+-- Crear un procedimiento que:
+-- 1) Reciba id_contrato y fecha_fin.
+-- 2) Verifique que el contrato no esté finalizado.
+-- 3) Actualice la fecha_fin.
+-- 4) Cambie el estado del departamento a 'disponible'.
